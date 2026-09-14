@@ -52,7 +52,7 @@ document.querySelectorAll('.menu-panel a').forEach((link) => {
 
 document.querySelectorAll('.thing-row').forEach((row) => {
   row.addEventListener('mouseenter', () => {
-    const colors = { yellow: '#e9ff4f', blue: '#4c8dff', pink: '#ff6d9e', green: '#71e0a4' };
+    const colors = { yellow: '#dfe7c8', blue: '#c5ddd7', pink: '#d9a69b', green: '#aec4aa' };
     row.style.setProperty('--row-color', colors[row.dataset.color]);
   });
 });
@@ -69,6 +69,11 @@ const durationLabel = document.querySelector('#song-duration');
 const nowPlayingTitle = document.querySelector('#now-playing-title');
 let songs = [];
 let activeSongIndex = -1;
+const bundledSong = {
+  name: 'WhatsApp Audio 2026-09-14 at 10.41.47 PM',
+  type: 'audio/mpeg',
+  url: encodeURI('WhatsApp Audio 2026-09-14 at 10.41.47 PM.mpeg')
+};
 
 const formatTime = (seconds) => {
   if (!Number.isFinite(seconds)) return '00:00';
@@ -105,7 +110,9 @@ const loadSong = (index, shouldPlay = false) => {
 };
 
 songPicker.addEventListener('change', (event) => {
-  songs.forEach((song) => URL.revokeObjectURL(song.url));
+  songs.forEach((song) => {
+    if (song.url.startsWith('blob:')) URL.revokeObjectURL(song.url);
+  });
   songs = [...event.target.files].map((file) => ({ name: file.name.replace(/\.[^/.]+$/, ''), type: file.type, url: URL.createObjectURL(file) }));
   loadSong(0);
 });
@@ -128,3 +135,6 @@ audioPlayer.addEventListener('ended', () => nextButton.click());
 progressInput.addEventListener('input', () => {
   if (audioPlayer.duration) audioPlayer.currentTime = (progressInput.value / 100) * audioPlayer.duration;
 });
+
+songs = [bundledSong];
+loadSong(0);
