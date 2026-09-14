@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Zarahatke is an unapologetically different creative playground for ideas, experiments and stories.">
-  <title>ZARAHATKE — Normal is boring</title>
+  <meta name="description" content="Sukoon is an unapologetically different creative playground for ideas, experiments and stories.">
+  <title>SUKOON — Normal is boring</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <header class="site-header">
-    <a class="wordmark" href="#top" aria-label="Zarahatke home">ZARA<span>HATKE</span></a>
+    <a class="wordmark" href="#top" aria-label="Sukoon home">SUK<span>OON</span></a>
     <div class="header-meta"><span class="live-dot"></span> A CREATIVE PLAYGROUND / 2026</div>
     <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span>
@@ -46,7 +46,7 @@
       <div class="intro-grid">
         <h2 class="reveal">What if<br><span>normal</span><br>was optional?</h2>
         <div class="intro-text">
-          <p class="big-lede">Zarahatke means <strong>different</strong>. We collect the odd thoughts, accidental discoveries and ideas with too much energy.</p>
+          <p class="big-lede">Sukoon is a space for the <strong>different</strong>. We collect the odd thoughts, accidental discoveries and ideas with too much energy.</p>
           <p>Consider this your permission slip to make the strange thing. No neat boxes. No corporate fog. Just curious people making noise in the right direction.</p>
           <a class="arrow-link" href="#things">MEET THE MISFITS <span>↗</span></a>
         </div>
@@ -75,6 +75,29 @@
       </div>
     </section>
 
+    <section class="music section-pad" id="music">
+      <div class="section-topline"><div class="section-label">[ 04 — THE SOUND CABINET ]</div><span>ADD YOUR OWN NOISE</span></div>
+      <div class="music-grid">
+        <div>
+          <h2 class="section-title reveal">Press<br><i>play.</i></h2>
+          <p class="music-intro">Drop in your songs and make this little corner yours.</p>
+          <label class="upload-button" for="song-picker">+ ADD SONGS</label>
+          <input id="song-picker" type="file" accept="audio/*" multiple>
+        </div>
+        <div class="player-shell">
+          <div class="now-playing"><span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="now-playing-title">NO SONG SELECTED</span></div>
+          <audio id="audio-player" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="player-button" id="previous-song" type="button" aria-label="Previous song">|&lt;</button>
+            <button class="player-button player-button-main" id="play-song" type="button" aria-label="Play song">PLAY</button>
+            <button class="player-button" id="next-song" type="button" aria-label="Next song">&gt;|</button>
+          </div>
+          <div class="timeline"><span id="current-time">00:00</span><input id="song-progress" type="range" min="0" max="100" value="0" aria-label="Song progress"><span id="song-duration">00:00</span></div>
+          <div class="playlist" id="playlist"><p class="playlist-empty">Your playlist is waiting.</p></div>
+        </div>
+      </div>
+    </section>
+
     <section class="manifesto section-pad">
       <div class="manifesto-mark">✳</div>
       <p class="section-label">[ 04 — OUR ONLY RULE ]</p>
@@ -85,7 +108,7 @@
 
     <footer class="footer section-pad" id="footer">
       <div class="footer-head"><span>WANT TO MAKE<br>SOMETHING STRANGE?</span><a class="footer-arrow" href="mailto:hello@zarahatke.studio">↗</a></div>
-      <div class="footer-bottom"><a class="wordmark" href="#top">ZARA<span>HATKE</span></a><span>© 2026 ZARAHATKE</span><span>MADE FOR THE CURIOUS</span></div>
+      <div class="footer-bottom"><a class="wordmark" href="#top">SUK<span>OON</span></a><span>© 2026 SUKOON</span><span>MADE FOR THE CURIOUS</span></div>
     </footer>
   </main>
   <script src="script.js"></script>
