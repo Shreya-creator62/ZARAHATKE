@@ -17,7 +17,11 @@ window.addEventListener('scroll', () => {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
   progress.style.width = `${(window.scrollY / scrollable) * 100}%`;
 
+  if (!track) return;
+
   const explore = document.querySelector('.explore');
+  if (!explore) return;
+
   const bounds = explore.getBoundingClientRect();
   if (bounds.top < window.innerHeight && bounds.bottom > 0) {
     const travel = Math.min(360, Math.max(0, (window.innerHeight - bounds.top) * 0.22));
@@ -67,12 +71,41 @@ const progressInput = document.querySelector('#song-progress');
 const currentTimeLabel = document.querySelector('#current-time');
 const durationLabel = document.querySelector('#song-duration');
 const nowPlayingTitle = document.querySelector('#now-playing-title');
+
 let songs = [];
 let activeSongIndex = -1;
+let activeCollectionKey = localStorage.getItem('sukoon-active-collection') || 'lofi';
+
 const bundledSong = {
+  id: 'default-bundled',
   name: 'WhatsApp Audio 2026-09-14 at 10.41.47 PM',
   type: 'audio/mpeg',
-  url: encodeURI('WhatsApp Audio 2026-09-14 at 10.41.47 PM.mpeg')
+  url: encodeURI('WhatsApp Audio 2026-09-14 at 10.41.47 PM.mpeg'),
+  source: 'default',
+  duration: '4:22'
+};
+
+const defaultCollections = {
+  lofi: [
+    { id: 'lofi-1', name: 'Night Drive', type: 'audio/mpeg', url: '', duration: '4:22', source: 'default' },
+    { id: 'lofi-2', name: 'Rainy Rooftop', type: 'audio/mpeg', url: '', duration: '3:58', source: 'default' },
+    { id: 'lofi-3', name: 'Soft Static', type: 'audio/mpeg', url: '', duration: '5:14', source: 'default' }
+  ],
+  lovy: [
+    { id: 'lovy-1', name: 'Moonlit Words', type: 'audio/mpeg', url: '', duration: '3:41', source: 'default' },
+    { id: 'lovy-2', name: 'Slow Bloom', type: 'audio/mpeg', url: '', duration: '4:06', source: 'default' },
+    { id: 'lovy-3', name: 'Afterglow', type: 'audio/mpeg', url: '', duration: '3:29', source: 'default' }
+  ],
+  desi: [
+    { id: 'desi-1', name: 'Chai & Chill', type: 'audio/mpeg', url: '', duration: '3:51', source: 'default' },
+    { id: 'desi-2', name: 'City Lights', type: 'audio/mpeg', url: '', duration: '4:18', source: 'default' },
+    { id: 'desi-3', name: 'Late Night Bites', type: 'audio/mpeg', url: '', duration: '3:45', source: 'default' }
+  ],
+  nineties: [
+    { id: 'nineties-1', name: 'Backseat Story', type: 'audio/mpeg', url: '', duration: '4:12', source: 'default' },
+    { id: 'nineties-2', name: 'Neon Dreams', type: 'audio/mpeg', url: '', duration: '3:57', source: 'default' },
+    { id: 'nineties-3', name: 'Summer Glide', type: 'audio/mpeg', url: '', duration: '4:24', source: 'default' }
+  ]
 };
 
 const formatTime = (seconds) => {
@@ -82,17 +115,72 @@ const formatTime = (seconds) => {
   return `${minutes}:${remainingSeconds}`;
 };
 
+const getCollectionStorageKey = (key) => `sukoon-playlist-${key}`;
+
+const getCollectionSongs = (key) => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(getCollectionStorageKey(key)) || '[]');
+    return Array.isArray(stored) ? stored.filter((song) => song && song.name) : [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const saveCollectionSongs = (key, list) => {
+  localStorage.setItem(getCollectionStorageKey(key), JSON.stringify(list));
+};
+
+const mergeCollectionSongs = (key) => [
+  ...(defaultCollections[key] || []),
+  ...getCollectionSongs(key)
+];
+
+const renderCollectionLists = () => {
+  document.querySelectorAll('.collection-group').forEach((group) => {
+    const key = group.dataset.collection || group.querySelector('.collection-tag').textContent.toLowerCase().replace(/[^a-z]+/g, '');
+    group.dataset.collection = key;
+
+    const list = group.querySelector('.song-list');
+    const items = mergeCollectionSongs(key);
+    list.innerHTML = items.map((song) => {
+      const duration = song.duration || (song.type ? (song.type.split('/')[1]?.toUpperCase() || 'AUDIO') : 'LOCAL');
+      return `<li><span>${song.name}</span><small>${duration}</small></li>`;
+    }).join('');
+
+    const button = group.querySelector('.collection-top button');
+    if (button) {
+      button.dataset.collection = key;
+      button.addEventListener('click', () => {
+        activeCollectionKey = key;
+        localStorage.setItem('sukoon-active-collection', key);
+      });
+    }
+
+    group.addEventListener('click', () => {
+      activeCollectionKey = key;
+      localStorage.setItem('sukoon-active-collection', key);
+    });
+  });
+};
+
 const renderPlaylist = () => {
+  if (!playlist) return;
+
   playlist.innerHTML = '';
   if (!songs.length) {
     playlist.innerHTML = '<p class="playlist-empty">Your playlist is waiting.</p>';
     return;
   }
+
   songs.forEach((song, index) => {
     const item = document.createElement('button');
     item.className = `playlist-item${index === activeSongIndex ? ' is-active' : ''}`;
     item.type = 'button';
-    item.innerHTML = `<span>${String(index + 1).padStart(2, '0')}</span><strong>${song.name}</strong><small>${song.type.split('/')[1]?.toUpperCase() || 'AUDIO'}</small>`;
+    item.innerHTML = `
+      <span>${String(index + 1).padStart(2, '0')}</span>
+      <strong>${song.name}</strong>
+      <small>${song.source === 'custom' ? 'LOCAL' : (song.type.split('/')[1]?.toUpperCase() || 'AUDIO')}</small>
+    `;
     item.addEventListener('click', () => loadSong(index, true));
     playlist.appendChild(item);
   });
@@ -109,12 +197,41 @@ const loadSong = (index, shouldPlay = false) => {
   if (shouldPlay) audioPlayer.play();
 };
 
-songPicker.addEventListener('change', (event) => {
-  songs.forEach((song) => {
-    if (song.url.startsWith('blob:')) URL.revokeObjectURL(song.url);
-  });
-  songs = [...event.target.files].map((file) => ({ name: file.name.replace(/\.[^/.]+$/, ''), type: file.type, url: URL.createObjectURL(file) }));
-  loadSong(0);
+const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = () => reject(new Error('Failed to read file'));
+  reader.readAsDataURL(file);
+});
+
+songPicker.addEventListener('change', async (event) => {
+  const files = [...event.target.files || []];
+  if (!files.length) return;
+
+  const savedForCollection = getCollectionSongs(activeCollectionKey);
+  const uploadedSongs = await Promise.all(files.map(async (file) => {
+    const dataUrl = await readFileAsDataUrl(file);
+    return {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      name: file.name.replace(/\.[^/.]+$/, ''),
+      type: file.type || 'audio/mpeg',
+      url: dataUrl,
+      duration: 'LOCAL',
+      source: 'custom'
+    };
+  }));
+
+  const nextCollectionSongs = [...savedForCollection, ...uploadedSongs];
+  saveCollectionSongs(activeCollectionKey, nextCollectionSongs);
+  renderCollectionLists();
+
+  const playableSongs = nextCollectionSongs.filter((song) => song && song.url);
+  if (playableSongs.length) {
+    songs = playableSongs;
+    loadSong(0, true);
+  }
+
+  songPicker.value = '';
 });
 
 playButton.addEventListener('click', () => {
@@ -137,4 +254,6 @@ progressInput.addEventListener('input', () => {
 });
 
 songs = [bundledSong];
+renderCollectionLists();
+renderPlaylist();
 loadSong(0);

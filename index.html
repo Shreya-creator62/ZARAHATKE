@@ -23,7 +23,6 @@
     <nav class="menu-panel" aria-label="Main navigation">
       <a href="#top">HOME <span>01</span></a>
       <a href="#music">MUSIC ROOM <span>02</span></a>
-      <a href="#explore">EXPLORE <span>03</span></a>
     </nav>
   </header>
 
@@ -38,16 +37,6 @@
       <div class="hero-sticker" data-cursor="peek">slow<br>down<br>here<span>✳</span></div>
       <a class="scroll-cue" href="#music"><span>↓</span> ENTER THE MUSIC ROOM</a>
       <div class="hero-side">01 / 03</div>
-    </section>
-
-    <section class="explore" id="explore">
-      <div class="explore-heading section-pad"><div class="section-label">[ 03 — A FEW THINGS TO FEEL ]</div><h2>Find a<br><i>quiet corner.</i></h2><span class="drag-hint">DRAG / SWIPE <b>→</b></span></div>
-      <div class="horizontal-track">
-        <article class="project-card card-yellow"><div class="card-image image-one"><span>01</span><strong>RAINY<br>WINDOWS</strong><i>↗</i></div><p>01 / For watching the world move gently by.</p></article>
-        <article class="project-card card-blue"><div class="card-image image-two"><span>02</span><strong>LATE<br>NIGHTS</strong><i>↗</i></div><p>02 / Soundtracks for the hour after midnight.</p></article>
-        <article class="project-card card-pink"><div class="card-image image-three"><span>03</span><strong>SOFT<br>MORNINGS</strong><i>↗</i></div><p>03 / A slow start for a tender day.</p></article>
-        <article class="project-card card-green"><div class="card-image image-four"><span>04</span><strong>OPEN<br>SKIES</strong><i>↗</i></div><p>04 / Space to think, breathe and begin again.</p></article>
-      </div>
     </section>
 
     <section class="music section-pad" id="music">
@@ -69,6 +58,63 @@
           </div>
           <div class="timeline"><span id="current-time">00:00</span><input id="song-progress" type="range" min="0" max="100" value="0" aria-label="Song progress"><span id="song-duration">00:00</span></div>
           <div class="playlist" id="playlist"><p class="playlist-empty">Your playlist is waiting.</p></div>
+        </div>
+      </div>
+
+      <div class="song-collections">
+        <div class="collections-header">
+          <p class="section-label">[ 02B — CURATED FOR YOUR MOOD ]</p>
+          <h3>Pick a vibe.</h3>
+        </div>
+
+        <div class="collection-grid">
+          <article class="collection-group collection-lofi">
+            <div class="collection-top">
+              <span class="collection-tag">LOFI</span>
+              <button type="button">PLAY MIX</button>
+            </div>
+            <ul class="song-list">
+              <li><span>Night Drive</span><small>4:22</small></li>
+              <li><span>Rainy Rooftop</span><small>3:58</small></li>
+              <li><span>Soft Static</span><small>5:14</small></li>
+            </ul>
+          </article>
+
+          <article class="collection-group collection-lovy">
+            <div class="collection-top">
+              <span class="collection-tag">LOVY DOVY</span>
+              <button type="button">PLAY MIX</button>
+            </div>
+            <ul class="song-list">
+              <li><span>Moonlit Words</span><small>3:41</small></li>
+              <li><span>Slow Bloom</span><small>4:06</small></li>
+              <li><span>Afterglow</span><small>3:29</small></li>
+            </ul>
+          </article>
+
+          <article class="collection-group collection-desi">
+            <div class="collection-top">
+              <span class="collection-tag">DESI HITS</span>
+              <button type="button">PLAY MIX</button>
+            </div>
+            <ul class="song-list">
+              <li><span>Chai &amp; Chill</span><small>3:51</small></li>
+              <li><span>City Lights</span><small>4:18</small></li>
+              <li><span>Late Night Bites</span><small>3:45</small></li>
+            </ul>
+          </article>
+
+          <article class="collection-group collection-nineties">
+            <div class="collection-top">
+              <span class="collection-tag">90S SONG</span>
+              <button type="button">PLAY MIX</button>
+            </div>
+            <ul class="song-list">
+              <li><span>Backseat Story</span><small>4:12</small></li>
+              <li><span>Neon Dreams</span><small>3:57</small></li>
+              <li><span>Summer Glide</span><small>4:24</small></li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
